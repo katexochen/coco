@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-kbs-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-kbs-db
+  template:
+    metadata:
+      labels:
+        app: simple-kbs-db
+        network: simple-kbs-default
+    spec:
+      containers:
+        - env:
+            - name: MARIADB_DATABASE
+              value: simple_kbs
+            - name: MARIADB_PASSWORD
+              value: kbspassword
+            - name: MARIADB_ROOT_PASSWORD
+              value: unused
+            - name: MARIADB_USER
+              value: kbsuser
+          image: ghcr.io/katexochen/confidential-containers/simple-kbs/kbs-db
+          name: db
+      restartPolicy: Always

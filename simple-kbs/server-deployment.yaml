@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-kbs-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-kbs-server
+  template:
+    metadata:
+      labels:
+        app: simple-kbs-server
+        network: simple-kbs-default
+    spec:
+      containers:
+        - env:
+            - name: KBS_DB
+              value: simple_kbs
+            - name: KBS_DB_HOST
+              value: simple-kbs-db
+            - name: KBS_DB_PW
+              value: kbspassword
+            - name: KBS_DB_TYPE
+              value: mysql
+            - name: KBS_DB_USER
+              value: kbsuser
+            - name: RUST_LOG
+              value: debug
+          image: ghcr.io/katexochen/confidential-containers/simple-kbs/simple-kbs
+          name: server
+          ports:
+            - containerPort: 44444
+      restartPolicy: Always
