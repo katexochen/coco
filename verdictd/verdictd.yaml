@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verdictd-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: verdictd-server
+  template:
+    metadata:
+      labels:
+        app: verdictd-server
+    spec:
+      containers:
+        - name: server
+          image: ghcr.io/katexochen/inclavare-containers/verdictd:1ad3027
+          env:
+            - name: RUST_LOG
+              value: debug
+          args:
+            - verdictd
+            - --listen=0.0.0.0:12345
+            - --client-api=127.0.0.1:50000
+            - --verifier=sgx_ecdsa
+            - --attester=nullattester
+            - --mutual
+          ports:
+            - containerPort: 12345
+          volumeMounts:
+            - name: sgx-provision
+              mountPath: /dev/sgx_provision
+            - name: sgx-enclave
+              mountPath: /dev/sgx_enclave
+          securityContext:
+            privileged: true
+      restartPolicy: Always
+      volumes:
+        - name: sgx-provision
+          hostPath:
+            path: /dev/sgx_provision
+        - name: sgx-enclave
+          hostPath:
+            path: /dev/sgx_enclave
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: verdictd-service
+spec:
+  ports:
+    - name: "12345"
+      port: 12345
+      targetPort: 12345
+  selector:
+    app: verdictd-server
