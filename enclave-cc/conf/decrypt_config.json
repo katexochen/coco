@@ -1,0 +1,4 @@
+{
+    "key_provider": "provider:attestation-agent:eaa_kbc::10.0.209.153:60000",
+    "security_validate": false
+}

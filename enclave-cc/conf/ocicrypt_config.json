@@ -1,0 +1,7 @@
+{
+    "key-providers": {
+        "attestation-agent": {
+            "grpc": "10.0.209.153:60000"
+        }
+    }
+}
