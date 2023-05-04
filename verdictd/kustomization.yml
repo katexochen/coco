@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - verdictd.yaml
+configMapGenerator:
+  - name: verdictd-container-policy
+    files:
+      - conf/container_policy.json
+  - name: verdictd-sigstore-config
+    files:
+      - conf/sigstore.yml
+  - name: verdictd-sgx-data
+    files:
+      - conf/sgxData
+  - name: verdictd-sgx-policy
+    files:
+      - conf/sgxPolicy.rego

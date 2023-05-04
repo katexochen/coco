@@ -14,24 +14,36 @@ spec:
     spec:
       containers:
         - name: server
-          image: ghcr.io/katexochen/inclavare-containers/verdictd:1ad3027
+          image: xynnn007/verdictd:cc0.5.0-rc0
           env:
             - name: RUST_LOG
               value: debug
           args:
             - verdictd
-            - --listen=0.0.0.0:12345
-            - --client-api=127.0.0.1:50000
+            - --listen=127.0.0.1:12345
+            - --client-api=0.0.0.0:60000
             - --verifier=sgx_ecdsa
             - --attester=nullattester
             - --mutual
           ports:
-            - containerPort: 12345
+            - containerPort: 60000
           volumeMounts:
             - name: sgx-provision
               mountPath: /dev/sgx_provision
             - name: sgx-enclave
               mountPath: /dev/sgx_enclave
+            - name: container-policy
+              mountPath: /opt/verdictd/image/policy.json
+              readOnly: true
+            - name: sigstore-config
+              mountPath: /opt/verdictd/image/sigstore.yml
+              readOnly: true
+            - name: sgx-data
+              mountPath: /opt/verdictd/opa/sgxData
+              readOnly: true
+            - name: sgx-policy
+              mountPath: /opt/verdictd/opa/sgxPolicy.rego
+              readOnly: true
           securityContext:
             privileged: true
       restartPolicy: Always
@@ -42,16 +54,28 @@ spec:
         - name: sgx-enclave
           hostPath:
             path: /dev/sgx_enclave
-
+        - name: container-policy
+          configMap:
+            name: verdictd-container-policy
+        - name: sigstore-config
+          configMap:
+            name: verdictd-sigstore-config
+        - name: sgx-data
+          configMap:
+            name: verdictd-sgx-data
+        - name: sgx-policy
+          configMap:
+            name: verdictd-sgx-policy
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: verdictd-service
 spec:
+  clusterIP: 10.0.209.153
   ports:
-    - name: "12345"
-      port: 12345
-      targetPort: 12345
+    - name: "60000"
+      port: 60000
+      targetPort: 60000
   selector:
     app: verdictd-server
