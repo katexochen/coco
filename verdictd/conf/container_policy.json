@@ -6,7 +6,7 @@
     ],
     "transport": {
         "docker": {
-            "ghcr.io/katexochen/coco-test-registry/*": [
+            "ghcr.io/katexochen/coco/*": [
                 {
                     "type": "sigstoreSigned",
                     "keyData": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFaGZvNUU2ZDkra25VK2U3Z0pjZVVHRmRvK2ZBaAo3bG9KaXpjZlR2c1N5ejhDbDFjbFJBTThTSHBOTlZhbUlRZjFLbWtxMzNzUTE4T1cycHV3VGUwdEZBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==",
