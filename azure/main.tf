@@ -37,7 +37,7 @@ locals {
 
 resource "azurerm_resource_group" "rg" {
   name     = local.name
-  location = "UK South"
+  location = "West Europe"
 }
 
 #
