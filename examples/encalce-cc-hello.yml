@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-world-cc
+spec:
+  containers:
+    - image: ghcr.io/katexochen/coco/hello-world
+      name: hello-world-test
+  runtimeClassName: enclave-cc
