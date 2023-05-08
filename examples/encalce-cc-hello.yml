@@ -4,6 +4,17 @@ metadata:
   name: hello-world-cc
 spec:
   containers:
-    - image: ghcr.io/katexochen/coco/hello-world
+    - image: ghcr.io/katexochen/coco/hello-world:b9b18cf
+      imagePullPolicy: IfNotPresent
       name: hello-world-test
+      env:
+        - name: OCCLUM_RELEASE_ENCLAVE
+          value: "1"
+      workingDir: "/run/rune/boot_instance/"
+      command:
+        - "/run/rune/boot_instance/occlum-run"
+        - "/helloworld.sh"
+      resources:
+        limits:
+          sgx.intel.com/epc: 600Mi
   runtimeClassName: enclave-cc

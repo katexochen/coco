@@ -1,0 +1,5 @@
+FROM alpine
+
+COPY ./helloworld.sh /helloworld.sh
+
+ENTRYPOINT ["/helloworld.sh"]
